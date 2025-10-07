@@ -86,10 +86,8 @@ def procesar_datos_excel(archivo_excel, num_hojas):
     for df in dfs_a_limpiar: df.columns = df.columns.str.strip()
 
     try:
-        # --- CAMBIO: Lógica de estandarización de columnas de ID ---
         id_unificado = 'id_unificado'
         if num_hojas >= 4:
-            # Caso estándar: [auth]
             col_auth_original = '[auth]'
             df_efectivas.rename(columns={col_auth_original: id_unificado}, inplace=True)
             df_todas1.rename(columns={col_auth_original: id_unificado}, inplace=True)
@@ -100,7 +98,6 @@ def procesar_datos_excel(archivo_excel, num_hojas):
             df_final = pd.merge(df_todas1, df_tiempos_p2, on=id_unificado, how='left', suffixes=('_p1', '_p2'))
             df_final['duracion_total_seg'] = df_final[f"{COL_TIEMPO_BASE}_p1"].fillna(0) + df_final[f"{COL_TIEMPO_BASE}_p2"].fillna(0)
         else:
-            # Caso excepcional: 'id' y 'ID de respuesta'
             df_efectivas.rename(columns={'id': id_unificado}, inplace=True)
             df_todas1.rename(columns={'ID de respuesta': id_unificado}, inplace=True)
             df_completadas2.rename(columns={'ID de respuesta': id_unificado}, inplace=True)
@@ -108,7 +105,6 @@ def procesar_datos_excel(archivo_excel, num_hojas):
             df_final = df_todas1.copy()
             df_final['duracion_total_seg'] = df_final[COL_TIEMPO_BASE].fillna(0)
 
-        # --- A partir de aquí, el código usa 'id_unificado' y funciona para ambos casos ---
         auth_efectivos = set(df_efectivas[id_unificado])
         auth_solo_completadas = set(df_completadas2[id_unificado])
         
@@ -144,7 +140,7 @@ def procesar_datos_excel(archivo_excel, num_hojas):
         return {"error": None, "df_final": df_final, "resumen_status": resumen_status, "ir": ir, "loi_minutos": media_acotada_minutos}
         
     except KeyError as e:
-        return {"error": f"No se encontró una columna de identificación esperada: {e}. Verifica que el archivo Excel tenga '[auth]' o 'id'/'ID de respuesta' según corresponda."}
+        return {"error": f"No se encontró una columna de identificación o la columna 'Filtro' esperada: {e}. Revisa las instrucciones y tu archivo."}
     except Exception as e:
         return {"error": f"Ocurrió un error durante el procesamiento: {e}"}
 
@@ -185,17 +181,27 @@ def convertir_a_excel(df_dict):
 aplicar_estilos_personalizados()
 
 st.markdown("""<div style="text-align: center;"><h1>📊 Análisis de Métricas IR & LOI</h1><p style="color: var(--atlantia-violet); font-weight: 500;">Una herramienta automatizada por Atlantia</p></div><hr style="border-top: 2px solid var(--atlantia-purple); margin-bottom: 2rem;">""", unsafe_allow_html=True)
-st.markdown("""### Instrucciones:
-Asegúrate de que tu archivo `.xlsx` siga una de las dos estructuras:
--   **Estándar (4 Hojas):**
-    1.  Encuestas efectivas (numérica)
-    2.  Todas las Encuestas (Parte 1)
-    3.  Todas las Encuestas (Parte 2)
-    4.  Encuestas Completadas (Parte 2)
--   **Excepción (3 Hojas):**
-    1.  Encuestas efectivas (numérica)
-    2.  Todas las Encuestas (Parte 1)
-    3.  Encuestas Completadas (Parte 2)""")
+
+# --- CAMBIO: INSTRUCCIONES ACTUALIZADAS ---
+st.markdown("""
+### Instrucciones para Preparar tu Archivo
+Sigue estos pasos cuidadosamente para asegurar que tu archivo sea procesado correctamente:
+
+1.  **Abre Excel** y crea un nuevo libro de trabajo.
+2.  **Coloca la información en hojas separadas** y en el siguiente orden estricto:
+    * **Hoja 1:** Encuestas efectivas (esta te la comparte el Líder de Procesamiento de Datos).
+    * **Hoja 2:** “Todas las encuestas - Parte 1” (descargada desde LimeSurvey).
+    * **Hoja 3:** “Todas las encuestas - Parte 2” (descargada desde LimeSurvey).
+    * **Hoja 4:** “Solo completas - Parte 2” (descargada desde LimeSurvey).
+
+    > **Nota:** Si tu proyecto no utiliza una base “Parte 2”, simplemente omite la Hoja 3. El orden de las demás hojas debe mantenerse.
+
+3.  En la **Hoja 2** (“Todas las encuestas - Parte 1”), busca la columna que utilizas para filtrar tus encuestas y **renómbrala exactamente como `Filtro`**.
+4.  **Importante:** No alteres el orden de las hojas ni el orden de las columnas dentro de cada base de datos.
+5.  **Guarda** el archivo en formato Excel (`.xlsx`).
+6.  Finalmente, **sube el archivo** a continuación.
+""")
+
 
 uploaded_file = st.file_uploader("Carga tu archivo Excel de métricas", type=['xlsx'])
 
