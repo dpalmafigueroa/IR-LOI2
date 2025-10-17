@@ -16,6 +16,17 @@ st.set_page_config(
 
 # --- FUNCIÓN PARA APLICAR ESTILOS CSS PERSONALIZADOS ---
 def aplicar_estilos_personalizados():
+    # --- OCULTAR MENÚ, ENCABEZADO Y PIE DE PÁGINA DE STREAMLIT ---
+    hide_streamlit_style = """
+                <style>
+                #MainMenu {visibility: hidden;}
+                footer {visibility: hidden;}
+                header {visibility: hidden;}
+                </style>
+                """
+    st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
+    # --- ESTILOS PERSONALIZADOS DE LA APLICACIÓN ---
     estilos = """
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
@@ -182,14 +193,13 @@ aplicar_estilos_personalizados()
 
 st.markdown("""<div style="text-align: center;"><h1>📊 Análisis de Métricas IR & LOI</h1><p style="color: var(--atlantia-violet); font-weight: 500;">Una herramienta automatizada por Atlantia</p></div><hr style="border-top: 2px solid var(--atlantia-purple); margin-bottom: 2rem;">""", unsafe_allow_html=True)
 
-# --- CAMBIO: INSTRUCCIONES ACTUALIZADAS ---
 st.markdown("""
 ### Instrucciones para Preparar tu Archivo
 Sigue estos pasos cuidadosamente para asegurar que tu archivo sea procesado correctamente:
 
 1.  **Abre Excel** y crea un nuevo libro de trabajo.
 2.  **Coloca la información en hojas separadas** y en el siguiente orden estricto:
-    * **Hoja 1:** Encuestas efectivas (esta te la comparte el Líder de Procesamiento de Datos).
+    * **Hoja 1:** Encuestas efectivas (la **base de datos numérica** que te comparte el Líder de Procesamiento de Datos).
     * **Hoja 2:** “Todas las encuestas - Parte 1” (descargada desde LimeSurvey).
     * **Hoja 3:** “Todas las encuestas - Parte 2” (descargada desde LimeSurvey).
     * **Hoja 4:** “Solo completas - Parte 2” (descargada desde LimeSurvey).
