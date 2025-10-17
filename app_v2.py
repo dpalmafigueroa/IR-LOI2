@@ -26,25 +26,84 @@ def aplicar_estilos_personalizados():
                 """
     st.markdown(hide_streamlit_style, unsafe_allow_html=True)
 
-    # --- ESTILOS PERSONALIZADOS DE LA APLICACIÓN ---
+    # --- ESTILOS PERSONALIZADOS DE LA APLICACIÓN (CON MODO OSCURO)---
     estilos = """
     <style>
         @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap');
         @import url('https://fonts.googleapis.com/css2?family=Hind:wght@400;500;600&display=swap');
+        
+        /* --- VARIABLES DE COLOR PARA MODO CLARO (POR DEFECTO) --- */
         :root {
             --atlantia-violet: #6546C3; --atlantia-purple: #AA49CA; --atlantia-lemon: #77C014;
             --atlantia-turquoise: #04D1CD; --atlantia-white: #FFFFFF; --atlantia-green: #23B776;
             --atlantia-yellow: #FFB73B; --atlantia-orange: #FF9231; --atlantia-red: #E61252;
             --atlantia-black: #000000;
+            --app-background: var(--atlantia-white);
+            --text-color: var(--atlantia-black);
+            --metric-bg: var(--atlantia-white);
+            --metric-value-color: var(--atlantia-black);
+            --box-shadow-color: rgba(4, 209, 205, 0.1);
         }
-        html, body, [class*="st-"] { font-family: 'Hind', sans-serif; font-size: 12pt; color: var(--atlantia-black); }
-        h1, h2, h3 { font-family: 'Poppins', sans-serif !important; font-weight: 700 !important; color: var(--atlantia-violet) !important; }
-        h1 { font-size: 24pt !important; } h2 { font-size: 20pt !important; } h3 { font-size: 18pt !important; }
-        .metric-container { background: white; border: 2px solid var(--atlantia-turquoise); border-radius: 10px; padding: 1.5rem 1rem 1rem 1rem; text-align: center; box-shadow: 0 2px 10px rgba(4, 209, 205, 0.1); }
-        .metric-label { font-family: 'Hind', sans-serif !important; font-weight: 500 !important; font-size: 14pt !important; color: var(--atlantia-violet) !important; }
-        .metric-value { font-family: 'Poppins', sans-serif !important; font-weight: 700 !important; font-size: 22pt !important; color: var(--atlantia-black) !important; margin-top: 0.5rem; }
-        .stButton > button { font-family: 'Hind', sans-serif !important; font-weight: 600 !important; font-size: 12pt !important; background: linear-gradient(135deg, var(--atlantia-violet) 0%, var(--atlantia-purple) 100%) !important; border: none !important; border-radius: 8px !important; box-shadow: 0 4px 15px rgba(101, 70, 195, 0.3) !important; transition: all 0.3s ease !important; }
-        .stButton > button:hover { transform: translateY(-2px) !important; box-shadow: 0 6px 20px rgba(101, 70, 195, 0.4) !important; }
+
+        /* --- VARIABLES DE COLOR PARA MODO OSCURO --- */
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --app-background: #0E1117; /* Color de fondo oscuro de Streamlit */
+                --text-color: #FAFAFA; /* Color de texto claro */
+                --metric-bg: #1E1E2E; /* Un fondo oscuro para las tarjetas */
+                --metric-value-color: var(--atlantia-white);
+                --box-shadow-color: rgba(4, 209, 205, 0.15);
+            }
+        }
+        
+        /* --- ESTILOS GENERALES --- */
+        html, body, [class*="st-"] { 
+            font-family: 'Hind', sans-serif; 
+            font-size: 12pt; 
+            color: var(--text-color); /* Usa la variable de color de texto */
+        }
+        h1, h2, h3 { 
+            font-family: 'Poppins', sans-serif !important; 
+            font-weight: 700 !important; 
+            color: var(--atlantia-violet) !important; 
+        }
+        h1 { font-size: 24pt !important; } 
+        h2 { font-size: 20pt !important; } 
+        h3 { font-size: 18pt !important; }
+        
+        /* --- ESTILOS DE COMPONENTES --- */
+        .metric-container { 
+            background: var(--metric-bg); /* Usa la variable de fondo */
+            border: 2px solid var(--atlantia-turquoise); 
+            border-radius: 10px; 
+            padding: 1.5rem 1rem 1rem 1rem; 
+            text-align: center; 
+            box-shadow: 0 2px 10px var(--box-shadow-color);
+        }
+        .metric-label { 
+            font-family: 'Hind', sans-serif !important; 
+            font-weight: 500 !important; 
+            font-size: 14pt !important; 
+            color: var(--atlantia-violet) !important; 
+        }
+        .metric-value { 
+            font-family: 'Poppins', sans-serif !important; 
+            font-weight: 700 !important; 
+            font-size: 22pt !important; 
+            color: var(--metric-value-color) !important; /* Usa la variable de color del valor */
+            margin-top: 0.5rem; 
+        }
+        .stButton > button { 
+            font-family: 'Hind', sans-serif !important; font-weight: 600 !important; font-size: 12pt !important; 
+            background: linear-gradient(135deg, var(--atlantia-violet) 0%, var(--atlantia-purple) 100%) !important; 
+            border: none !important; border-radius: 8px !important; 
+            box-shadow: 0 4px 15px rgba(101, 70, 195, 0.3) !important; 
+            transition: all 0.3s ease !important; 
+        }
+        .stButton > button:hover { 
+            transform: translateY(-2px) !important; 
+            box-shadow: 0 6px 20px rgba(101, 70, 195, 0.4) !important; 
+        }
         .stAlert { border-radius: 10px !important; }
         .stAlert[data-baseweb="notification-positive"] { background-color: rgba(35, 183, 118, 0.2) !important; color: var(--atlantia-green) !important;}
         .stAlert[data-baseweb="notification-negative"] { background-color: rgba(230, 18, 82, 0.2) !important; color: var(--atlantia-red) !important;}
@@ -67,11 +126,22 @@ POSICIONES_HOJAS_EXCEPCION = {"efectivas": 0, "todas1": 1, "completadas2": 2}
 def crear_tabla_status_html(df):
     header_style = "text-align: left; padding: 8px; border-bottom: 2px solid var(--atlantia-violet); color: var(--atlantia-violet);"
     cell_style = "padding: 8px; border-bottom: 1px solid #eee;"
+    
+    # Ajuste para modo oscuro en la barra de progreso
+    bar_color = "#6546C3"
+    text_color_in_bar = "white"
+
     html = f"""<table style="width:100%; border-collapse: collapse; font-family: 'Hind', sans-serif;"><thead><tr><th style="{header_style}">Status</th><th style="{header_style}">Conteo</th><th style="{header_style}">Porcentaje (%)</th></tr></thead><tbody>"""
     for _, row in df.iterrows():
         status, conteo, percent = row['Status'], row['Conteo'], row['Porcentaje']
-        progress_bar_html = f"""<div style="display: flex; align-items: center; width: 100%;"><div style="width: {percent}%; background-color: #6546C3; height: 20px; border-radius: 5px;"></div><span style="padding-left: 8px; white-space: nowrap;">{percent:.2f}%</span></div>"""
-        html += f"""<tr><td style="{cell_style}">{status}</td><td style="{cell_style}">{conteo}</td><td style="{cell_style} width: 50%;">{progress_bar_html}</td></tr>"""
+        # Se ha modificado ligeramente la barra para asegurar que el texto sea legible
+        progress_bar_html = f"""
+        <div style="position: relative; background-color: #f0f2f6; border-radius: 5px; height: 22px;">
+            <div style="position: absolute; left: 0; top: 0; width: {percent}%; background-color: {bar_color}; height: 100%; border-radius: 5px;"></div>
+            <div style="position: absolute; left: 8px; top: 0; line-height: 22px; color: {text_color_in_bar}; font-weight: bold; text-shadow: 1px 1px 2px rgba(0,0,0,0.5);">{percent:.2f}%</div>
+        </div>
+        """
+        html += f"""<tr><td style="{cell_style}">{status}</td><td style="{cell_style}">{conteo}</td><td style="{cell_style} width: 50%;">{progress_bar_html.replace(str(percent), f"{percent:.2f}")}</td></tr>"""
     html += "</tbody></table>"
     return html
 
